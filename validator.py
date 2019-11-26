@@ -38,5 +38,12 @@ for row in range(2, end):
         comment = Comment("Gender must be M or F", "Windows User")
         sheet['D' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
         sheet['D' + str(row)].comment = comment
+
+#Classification must be 100010 or 200010
+for row in range(2, end):    
+    if not (sheet['H' + str(row)].value == 100010 or sheet['H' + str(row)].value == 200010):
+        comment = Comment("Classification must be 100010 or 200010", "Windows User")
+        sheet['H' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
+        sheet['H' + str(row)].comment = comment
         
 wb.save('LA Co Of Ed - UPDATED.xlsx')
