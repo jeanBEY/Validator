@@ -45,5 +45,12 @@ for row in range(2, end):
         comment = Comment("Classification must be 100010 or 200010", "Windows User")
         sheet['H' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
         sheet['H' + str(row)].comment = comment
+
+#Transaction Code must be either TX, LX, RA or RX
+for row in range(2, end):    
+    if not (sheet['M' + str(row)].value == 'TX' or sheet['M' + str(row)].value == 'LX' or sheet['M' + str(row)].value == 'RX' or sheet['M' + str(row)].value == 'RA'):
+        comment = Comment("Transaction code must be TX/LX/RA/RX", "Windows User")
+        sheet['M' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
+        sheet['M' + str(row)].comment = comment
         
 wb.save('LA Co Of Ed - UPDATED.xlsx')
