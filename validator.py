@@ -52,5 +52,12 @@ for row in range(2, end):
         comment = Comment("Transaction code must be TX/LX/RA/RX", "Windows User")
         sheet['M' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
         sheet['M' + str(row)].comment = comment
+
+#Earning Type must be either REG, OVT, RTS
+for row in range(2, end):    
+    if not (sheet['N' + str(row)].value == 'REG' or sheet['N' + str(row)].value == 'OVT' or sheet['N' + str(row)].value == 'RTS'):
+        comment = Comment("Earning type must be REG/OVT/RTS", "Windows User")
+        sheet['N' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
+        sheet['N' + str(row)].comment = comment
         
 wb.save('LA Co Of Ed - UPDATED.xlsx')
