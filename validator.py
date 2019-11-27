@@ -67,11 +67,18 @@ for row in range(2, end):
         sheet['V' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
         sheet['V' + str(row)].comment = comment
 
-#Retirement Plan must be either S3, S3 or P9
+#Retirement Plan must be either S3, S5 or P9
 for row in range(2, end):    
     if not (sheet['T' + str(row)].value == 'S3' or sheet['T' + str(row)].value == 'S5' or sheet['T' + str(row)].value == 'P9'):
-        comment = Comment("PEPRA Code must be */1", "Windows User")
+        comment = Comment("Retirement Plan must be S3/S5/P9", "Windows User")
         sheet['T' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
         sheet['T' + str(row)].comment = comment
+
+#Retirement Status must be either M, N or R
+for row in range(2, end):    
+    if not (sheet['U' + str(row)].value == 'M' or sheet['U' + str(row)].value == 'N' or sheet['U' + str(row)].value == 'R'):
+        comment = Comment("Retirement Status must be M/N/R", "Windows User")
+        sheet['U' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
+        sheet['U' + str(row)].comment = comment
         
 wb.save('LA Co Of Ed - UPDATED.xlsx')
