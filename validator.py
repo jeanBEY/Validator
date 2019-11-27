@@ -59,5 +59,12 @@ for row in range(2, end):
         comment = Comment("Earning type must be REG/OVT/RTS", "Windows User")
         sheet['N' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
         sheet['N' + str(row)].comment = comment
+
+#PEPRA Code must be either * or 1 
+for row in range(2, end):    
+    if not (sheet['V' + str(row)].value == '*' or sheet['V' + str(row)].value == 1):
+        comment = Comment("PEPRA Code must be */1", "Windows User")
+        sheet['V' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
+        sheet['V' + str(row)].comment = comment
         
 wb.save('LA Co Of Ed - UPDATED.xlsx')
