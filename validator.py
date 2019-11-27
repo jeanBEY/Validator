@@ -80,5 +80,13 @@ for row in range(2, end):
         comment = Comment("Retirement Status must be M/N/R", "Windows User")
         sheet['U' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
         sheet['U' + str(row)].comment = comment
+
+#Rate must be > 0
+for row in range(2, end):    
+    if not (sheet['R' + str(row)].value > 0):
+        comment = Comment("Rate must be higher than zero", "Windows User")
+        sheet['R' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
+        sheet['R' + str(row)].comment = comment
+
         
 wb.save('LA Co Of Ed - UPDATED.xlsx')
