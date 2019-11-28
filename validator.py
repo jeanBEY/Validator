@@ -6,11 +6,19 @@ from openpyxl.styles import Font, Color, PatternFill, Border
 from openpyxl.utils import get_column_letter, column_index_from_string
 from openpyxl.comments import Comment
 
+from openpyxl.styles.colors import BLUE
+
 print('Opening workbook...')
 wb = openpyxl.load_workbook('LA Co Of Ed.xlsx', data_only=True)
 sheet = wb.active
 
 end = 1
+currentStart = 191001
+currentEnd = 191031
+
+#########################
+#   DATA VALIDATION
+#########################
 
 #Find last row with data in column A
 for lastRow in range(2, sheet.max_row):
@@ -122,5 +130,81 @@ for row in range(2, end):
         comment = Comment("Time must be higher than zero", "Windows User")
         sheet['Q' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
         sheet['Q' + str(row)].comment = comment
-        
+
+#########################
+#        ALL
+#########################
+
+#Check current earnings
+for row in range(2, end): 
+    if (sheet['M' + str(row)].value == 'TX'):
+        if not (sheet['I' + str(row)].value >= currentStart and sheet['I' + str(row)].value <= currentEnd):
+            comment = Comment("Start date is not current", "Windows User")
+            sheet['I' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
+            sheet['I' + str(row)].comment = comment
+
+        if not(sheet['J' + str(row)].value >= currentStart and sheet['J' + str(row)].value <= currentEnd):
+            comment = Comment("End date is not current", "Windows User")
+            sheet['J' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
+            sheet['J' + str(row)].comment = comment
+
+        if not (sheet['S' + str(row)].value > 0):
+            comment = Comment("Earnings must be positive", "Windows User")
+            sheet['S' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
+            sheet['S' + str(row)].comment = comment
+
+
+        if not (sheet['AA' + str(row)].value > 0):
+            comment = Comment("Reporting rate must be positive", "Windows User")
+            sheet['AA' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
+            sheet['AA' + str(row)].comment = comment
+
+#Check reversal earnings
+for row in range(2, end): 
+    if (sheet['M' + str(row)].value == 'RX'):
+        if not (sheet['I' + str(row)].value < currentStart and sheet['I' + str(row)].value <= sheet['J' + str(row)].value):
+            comment = Comment("Start date is not prior", "Windows User")
+            sheet['I' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
+            sheet['I' + str(row)].comment = comment
+
+        if not(sheet['J' + str(row)].value < currentStart and sheet['J' + str(row)].value >= sheet['I' + str(row)].value):
+            comment = Comment("End date is not prior", "Windows User")
+            sheet['J' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
+            sheet['J' + str(row)].comment = comment
+
+        if not (sheet['S' + str(row)].value < 0):
+            comment = Comment("Earnings must be negative (reversal)", "Windows User")
+            sheet['S' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
+            sheet['S' + str(row)].comment = comment
+
+
+        if not (sheet['AA' + str(row)].value > 0):
+            comment = Comment("Reporting rate must be positive", "Windows User")
+            sheet['AA' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
+            sheet['AA' + str(row)].comment = comment
+
+#Check late earnings
+for row in range(2, end): 
+    if (sheet['M' + str(row)].value == 'LX'):
+        if not (sheet['I' + str(row)].value < currentStart and sheet['I' + str(row)].value <= sheet['J' + str(row)].value):
+            comment = Comment("Start date is not prior", "Windows User")
+            sheet['I' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
+            sheet['I' + str(row)].comment = comment
+
+        if not(sheet['J' + str(row)].value < currentStart and sheet['J' + str(row)].value >= sheet['I' + str(row)].value):
+            comment = Comment("End date is not prior", "Windows User")
+            sheet['J' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
+            sheet['J' + str(row)].comment = comment
+
+        if not (sheet['S' + str(row)].value > 0):
+            comment = Comment("Earnings must be positive", "Windows User")
+            sheet['S' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
+            sheet['S' + str(row)].comment = comment
+
+
+        if not (sheet['AA' + str(row)].value > 0):
+            comment = Comment("Reporting rate must be positive", "Windows User")
+            sheet['AA' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
+            sheet['AA' + str(row)].comment = comment
+
 wb.save('LA Co Of Ed - UPDATED.xlsx')
