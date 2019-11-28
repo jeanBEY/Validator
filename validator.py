@@ -7,7 +7,7 @@ from openpyxl.utils import get_column_letter, column_index_from_string
 from openpyxl.comments import Comment
 
 print('Opening workbook...')
-wb = openpyxl.load_workbook('LA Co Of Ed.xlsx')
+wb = openpyxl.load_workbook('LA Co Of Ed.xlsx', data_only=True)
 sheet = wb.active
 
 end = 1
@@ -88,5 +88,11 @@ for row in range(2, end):
         sheet['R' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
         sheet['R' + str(row)].comment = comment
 
+#Reporting Rate must be > 0
+for row in range(2, end):    
+    if not (sheet['AA' + str(row)].value > 0):
+        comment = Comment("Reporting rate must be higher than zero", "Windows User")
+        sheet['AA' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
+        sheet['AA' + str(row)].comment = comment
         
 wb.save('LA Co Of Ed - UPDATED.xlsx')
