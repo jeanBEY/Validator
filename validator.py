@@ -94,5 +94,12 @@ for row in range(2, end):
         comment = Comment("Reporting rate must be higher than zero", "Windows User")
         sheet['AA' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
         sheet['AA' + str(row)].comment = comment
+
+#Percentage must be > 0 && <= 100
+for row in range(2, end):    
+    if not (sheet['Z' + str(row)].value > 0 and sheet['Z' + str(row)].value <= 100):
+        comment = Comment("Percentage higher than zero & less than or equal to 100", "Windows User")
+        sheet['Z' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
+        sheet['Z' + str(row)].comment = comment
         
 wb.save('LA Co Of Ed - UPDATED.xlsx')
