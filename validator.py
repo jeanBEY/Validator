@@ -207,4 +207,12 @@ for row in range(2, end):
             sheet['AA' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
             sheet['AA' + str(row)].comment = comment
 
+#Check stipends
+for row in range(2, end): 
+    if (sheet['O' + str(row)].value == 'L'):
+        if not (sheet['R' + str(row)].value == sheet['S' + str(row)].value and sheet['S' + str(row)].value == sheet['AA' + str(row)].value):
+            comment = Comment("This is a stipend.  Rate = earnings = reporting rate.", "Windows User")
+            sheet['S' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
+            sheet['S' + str(row)].comment = comment
+
 wb.save('LA Co Of Ed - UPDATED.xlsx')
