@@ -101,5 +101,12 @@ for row in range(2, end):
         comment = Comment("Percentage higher than zero & less than or equal to 100", "Windows User")
         sheet['Z' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
         sheet['Z' + str(row)].comment = comment
+
+#Session must be S
+for row in range(2, end):    
+    if not (sheet['AB' + str(row)].value == 'S'):
+        comment = Comment("Session must be S", "Windows User")
+        sheet['AB' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
+        sheet['AB' + str(row)].comment = comment
         
 wb.save('LA Co Of Ed - UPDATED.xlsx')
