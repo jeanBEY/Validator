@@ -112,8 +112,15 @@ for row in range(2, end):
 #Number of pays must be 10, 11 or 12
 for row in range(2, end):    
     if not (sheet['P' + str(row)].value == 10 or sheet['P' + str(row)].value == 11 or sheet['P' + str(row)].value == 12):
-        comment = Comment("Session must be S", "Windows User")
+        comment = Comment("Number of pays must be 10, 11 or 12", "Windows User")
         sheet['P' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
         sheet['P' + str(row)].comment = comment
+
+#Time must be > 0
+for row in range(2, end):    
+    if not (sheet['Q' + str(row)].value > 0):
+        comment = Comment("Time must be higher than zero", "Windows User")
+        sheet['Q' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
+        sheet['Q' + str(row)].comment = comment
         
 wb.save('LA Co Of Ed - UPDATED.xlsx')
