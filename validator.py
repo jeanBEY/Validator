@@ -215,4 +215,31 @@ for row in range(2, end):
             sheet['S' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
             sheet['S' + str(row)].comment = comment
 
+#########################
+#      S T R SYSTEM
+#########################
+
+#Check hourly earnings
+for row in range(2, end):
+    #If a STRS line
+    if (sheet['H' + str(row)].value == 100010):
+        #If an hourly line
+        if (sheet['O' + str(row)].value == 'H'):
+            
+            if not (sheet['Q' + str(row)].value == (sheet['S' + str(row)].value/sheet['R' + str(row)].value)):
+                comment = Comment("Time must be earnings/rate & positive", "Windows User")
+                sheet['Q' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
+                sheet['Q' + str(row)].comment = comment
+                
+            if not (sheet['R' + str(row)].value < 100):
+                comment = Comment("Rate must be an hourly rate, ideally less than $100/hr", "Windows User")
+                sheet['R' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
+                sheet['R' + str(row)].comment = comment
+                
+            if not (sheet['AA' + str(row)].value > 25000):
+                comment = Comment("Reporting rate must be positive & an annualized rate, ideally over 25k", "Windows User")
+                sheet['AA' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
+                sheet['AA' + str(row)].comment = comment
+
+                
 wb.save('LA Co Of Ed - UPDATED.xlsx')
