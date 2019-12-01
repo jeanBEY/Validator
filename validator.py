@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#validator.py - Validates the data on STRS/PERS report for submission to LACOE
+#validator.py - Validates the data on S T R System/P E R System report for submission to LACOE
 
 import openpyxl, pprint
 from openpyxl.styles import Font, Color, PatternFill, Border
@@ -68,10 +68,10 @@ for row in range(2, end):
         sheet['N' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
         sheet['N' + str(row)].comment = comment
 
-#PEPRA Code must be either * or 1
+#P E P R A Code must be either * or 1
 for row in range(2, end):    
     if not (sheet['V' + str(row)].value == '*' or sheet['V' + str(row)].value == 1):
-        comment = Comment("PEPRA Code must be */1", "Windows User")
+        comment = Comment("P E P R A Code must be */1", "Windows User")
         sheet['V' + str(row)].fill = PatternFill(bgColor="FFC7CE", fill_type = "solid")
         sheet['V' + str(row)].comment = comment
 
@@ -221,7 +221,7 @@ for row in range(2, end):
 
 #Check hourly earnings
 for row in range(2, end):
-    #If a STRS line
+    #If a S T R System line
     if (sheet['H' + str(row)].value == 100010):
         #If an hourly line
         if (sheet['O' + str(row)].value == 'H'):
@@ -241,5 +241,16 @@ for row in range(2, end):
                 sheet['AA' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
                 sheet['AA' + str(row)].comment = comment
 
+#Check salary(monthly) earnings
+for row in range(2, end):
+    #If a S T R System line
+    if (sheet['H' + str(row)].value == 100010):
+        #If an hourly line
+        if (sheet['O' + str(row)].value == 'M'):
+                
+            if not ((sheet['AA' + str(row)].value > 25000) or (sheet['R' + str(row)].value == sheet['AA' + str(row)].value)):
+                comment = Comment("Reporting rate must be monthly or annualized", "Windows User")
+                sheet['AA' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
+                sheet['AA' + str(row)].comment = comment
                 
 wb.save('LA Co Of Ed - UPDATED.xlsx')
