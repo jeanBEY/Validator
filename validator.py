@@ -7,7 +7,8 @@ from openpyxl.utils import get_column_letter, column_index_from_string
 from openpyxl.comments import Comment
 
 from openpyxl.styles.colors import BLUE
-from openpyxl.styles.colors import DARKYELLOW
+from openpyxl.styles.colors import RED
+from openpyxl.styles.colors import YELLOW
 
 print('Opening workbook...')
 wb = openpyxl.load_workbook('LA Co Of Ed.xlsx', data_only=True)
@@ -222,36 +223,40 @@ for row in range(2, end):
 
 #Check hourly earnings
 for row in range(2, end):
+    
     #If a S T R System line
     if (sheet['H' + str(row)].value == 100010):
+        
         #If an hourly line
         if (sheet['O' + str(row)].value == 'H'):
             
             if not (sheet['Q' + str(row)].value == (sheet['S' + str(row)].value/sheet['R' + str(row)].value)):
                 comment = Comment("Time must be earnings/rate & positive", "Windows User")
-                sheet['Q' + str(row)].fill = PatternFill(fgColor=DARKYELLOW, fill_type = "solid")
+                sheet['Q' + str(row)].fill = PatternFill(fgColor=RED, fill_type = "solid")
                 sheet['Q' + str(row)].comment = comment
                 
             if not (sheet['R' + str(row)].value < 100):
                 comment = Comment("Rate must be an hourly rate, ideally less than $100/hr", "Windows User")
-                sheet['R' + str(row)].fill = PatternFill(fgColor=DARKYELLOW, fill_type = "solid")
+                sheet['R' + str(row)].fill = PatternFill(fgColor=RED, fill_type = "solid")
                 sheet['R' + str(row)].comment = comment
                 
             if not (sheet['AA' + str(row)].value > 25000):
                 comment = Comment("Reporting rate must be positive & an annualized rate, ideally over 25k", "Windows User")
-                sheet['AA' + str(row)].fill = PatternFill(fgColor=DARKYELLOW, fill_type = "solid")
+                sheet['AA' + str(row)].fill = PatternFill(fgColor=RED, fill_type = "solid")
                 sheet['AA' + str(row)].comment = comment
 
 #Check salary(monthly) earnings
 for row in range(2, end):
+    
     #If a S T R System line
     if (sheet['H' + str(row)].value == 100010):
-        #If an hourly line
+        
+        #If a monthly line
         if (sheet['O' + str(row)].value == 'M'):
                 
             if not ((sheet['AA' + str(row)].value > 25000) or (sheet['R' + str(row)].value == sheet['AA' + str(row)].value)):
                 comment = Comment("Reporting rate must be monthly or annualized", "Windows User")
-                sheet['AA' + str(row)].fill = PatternFill(fgColor=DARKYELLOW, fill_type = "solid")
+                sheet['AA' + str(row)].fill = PatternFill(fgColor=RED, fill_type = "solid")
                 sheet['AA' + str(row)].comment = comment
 
 #Check retirement plans
@@ -266,21 +271,21 @@ for row in range(2, end):
             #Earnings should match subject
             if not (sheet['S' + str(row)].value == sheet['W' + str(row)].value):
                 comment = Comment("Subject should equal earnings", "Windows User")
-                sheet['W' + str(row)].fill = PatternFill(fgColor=DARKYELLOW, fill_type = "solid")
+                sheet['W' + str(row)].fill = PatternFill(fgColor=RED, fill_type = "solid")
                 sheet['W' + str(row)].comment = comment
                 
                 #If current or late
                 if (sheet['U' + str(row)].value == 'M' and sheet['M' + str(row)].value == 'TX' or sheet['M' + str(row)].value == 'LX'):
                     if not (sheet['W' + str(row)].value > 0 and sheet['Y' + str(row)].value > 0 and sheet['Z' + str(row)].value > 0):
                         comment = Comment("Subject/EE/ER should be > zero", "Windows User")
-                        sheet['W' + str(row)].fill = PatternFill(fgColor=DARKYELLOW, fill_type = "solid")
+                        sheet['W' + str(row)].fill = PatternFill(fgColor=RED, fill_type = "solid")
                         sheet['W' + str(row)].comment = comment
                         
                 #If reversal
                 if (sheet['U' + str(row)].value == 'M' and sheet['M' + str(row)].value == 'RX'):
                     if not (sheet['W' + str(row)].value < 0 and sheet['Y' + str(row)].value < 0 and sheet['Z' + str(row)].value < 0):
                         comment = Comment("Subject/EE/ER should be < zero", "Windows User")
-                        sheet['W' + str(row)].fill = PatternFill(fgColor=DARKYELLOW, fill_type = "solid")
+                        sheet['W' + str(row)].fill = PatternFill(fgColor=RED, fill_type = "solid")
                         sheet['W' + str(row)].comment = comment
 
         #If nonmember earnings
@@ -289,14 +294,72 @@ for row in range(2, end):
             #Subject should be zero
             if not (sheet['W' + str(row)].value == 0):
                 comment = Comment("Subject should be zero", "Windows User")
-                sheet['W' + str(row)].fill = PatternFill(fgColor=DARKYELLOW, fill_type = "solid")
+                sheet['W' + str(row)].fill = PatternFill(fgColor=RED, fill_type = "solid")
                 sheet['W' + str(row)].comment = comment
 
                 #If non-member or retiree
                 if (sheet['U' + str(row)].value == 'N' or sheet['U' + str(row)].value == 'R'):
                     if not (sheet['W' + str(row)].value == 0 and sheet['Y' + str(row)].value == 0 and sheet['Z' + str(row)].value == 0):
                         comment = Comment("Subject/EE/ER should ALL be zero", "Windows User")
-                        sheet['W' + str(row)].fill = PatternFill(fgColor=DARKYELLOW, fill_type = "solid")
+                        sheet['W' + str(row)].fill = PatternFill(fgColor=RED, fill_type = "solid")
                         sheet['W' + str(row)].comment = comment
+
+#########################
+#      P E R SYSTEM
+#########################
+
+#Check salary(monthly) earnings
+for row in range(2, end):
+    
+    #If a P E R System line
+    if (sheet['H' + str(row)].value == 200010):
+        
+        #If a monthly line
+        if (sheet['O' + str(row)].value == 'M'):
+
+            #Reporting rate should equal rate
+            if not (sheet['R' + str(row)].value == sheet['AA' + str(row)].value):
+                comment = Comment("Reporting rate should equal rate", "Windows User")
+                sheet['AA' + str(row)].fill = PatternFill(fgColor=YELLOW, fill_type = "solid")
+                sheet['AA' + str(row)].comment = comment
+
+            #Subject should equal earned
+            if not (sheet['W' + str(row)].value == sheet['S' + str(row)].value):
+                comment = Comment("Subject should equal earned", "Windows User")
+                sheet['W' + str(row)].fill = PatternFill(fgColor=YELLOW, fill_type = "solid")
+                sheet['W' + str(row)].comment = comment
+
+#Check hourly earnings
+for row in range(2, end):
+    
+    #If a P E R System line
+    if (sheet['H' + str(row)].value == 200010):
+        
+        #If an hourly line
+        if (sheet['O' + str(row)].value == 'H'):
+
+            #Reporting rate should equal rate
+            if not (sheet['R' + str(row)].value == sheet['AA' + str(row)].value):
+                comment = Comment("Reporting rate should equal rate", "Windows User")
+                sheet['AA' + str(row)].fill = PatternFill(fgColor=YELLOW, fill_type = "solid")
+                sheet['AA' + str(row)].comment = comment
+
+            #Subject should equal earned
+            if not (sheet['W' + str(row)].value == sheet['S' + str(row)].value):
+                comment = Comment("Subject should equal earned", "Windows User")
+                sheet['W' + str(row)].fill = PatternFill(fgColor=YELLOW, fill_type = "solid")
+                sheet['W' + str(row)].comment = comment
+
+            #Rate should be < $100/hr
+            if not (sheet['R' + str(row)].value < 100):
+                comment = Comment("Rate should be < $100/hr", "Windows User")
+                sheet['R' + str(row)].fill = PatternFill(fgColor=YELLOW, fill_type = "solid")
+                sheet['R' + str(row)].comment = comment
+
+            #Time = earned/rate
+            if not (sheet['Q' + str(row)].value == (sheet['S' + str(row)].value/sheet['R' + str(row)].value)):
+                comment = Comment("Time = earned/rate", "Windows User")
+                sheet['Q' + str(row)].fill = PatternFill(fgColor=YELLOW, fill_type = "solid")
+                sheet['Q' + str(row)].comment = comment
                 
 wb.save('LA Co Of Ed - UPDATED.xlsx')
