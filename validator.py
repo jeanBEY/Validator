@@ -217,6 +217,21 @@ for row in range(2, end):
             sheet['S' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
             sheet['S' + str(row)].comment = comment
 
+
+#Check monthly
+socialSecurityNumList = []
+for row in range(2, end):
+    if (sheet['O' + str(row)].value == 'M'):
+        if (sheet['M' + str(row)].value == 'TX'):
+            #Check if it exists -- yes error, no add
+            if sheet['F' + str(row)].value in socialSecurityNumList:
+                comment = Comment("This is a duplicate monthly salary.  Verify this is correct, otherwise fix.  Should only have one salary line per month.", "Windows User")
+                sheet['F' + str(row)].fill = PatternFill(fgColor=BLUE, fill_type = "solid")
+                sheet['F' + str(row)].comment = comment
+            else:
+                socialSecurityNumList.append(sheet['F' + str(row)].value)
+                
+
 #########################
 #      S T R SYSTEM
 #########################
